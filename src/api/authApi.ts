@@ -11,3 +11,6 @@ export const login = async (user: any) =>
 //       Authorization: token,
 //     },
 //   });
+
+export const profile = async () =>
+  await axios.get('https://reqres.in/api/users/2');

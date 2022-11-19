@@ -12,7 +12,7 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const signin = async ({
@@ -27,7 +27,7 @@ export const AuthProvider = ({children}) => {
     });
     try {
       const res = await login({email, password});
-      
+
       const {token} = res.data;
       if (token) {
         dispatch({

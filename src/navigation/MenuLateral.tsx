@@ -19,8 +19,12 @@ export const MenuLateral = () => {
     <Drawer.Navigator
       //   drawerType={width >= 768 ? 'permanent' : 'front'}
       drawerContent={props => <MenuInterno {...props} />}>
-      <Drawer.Screen name="HomeScreen" component={HomeScreen} />
-      <Drawer.Screen name="UserProfileScreen" component={UserProfileScreen} />
+      <Drawer.Screen name="HomeScreen" component={HomeScreen}  options={{title: 'Home'}}/>
+      <Drawer.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{title: 'My profile'}}
+      />
       <Drawer.Screen
         name="DetailScreen"
         component={DetailScreen}
