@@ -16,7 +16,6 @@ export const AuthProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const signOut = () => {
-   
     dispatch({
       type: AuthActions.AUTH_SIGNOUT,
     });
@@ -33,21 +32,27 @@ export const AuthProvider = ({children}: any) => {
       type: AuthActions.AUTH_SIGNIN,
     });
     try {
-      const res = await loginStrapi({identifier:email, password});
-      
-      const {jwt,user} = res.data;
+      const res = await loginStrapi({identifier: email, password});
+
+      const {jwt, user} = res.data;
       if (jwt) {
         dispatch({
           type: AuthActions.AUTH_SIGNIN_SUCCESS,
           payload: {
-            token:jwt,
-            user:user
+            token: jwt,
+            user: user,
           },
         });
         return jwt;
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('error', JSON.stringify(error));
+      dispatch({
+        type: AuthActions.AUTH_SIGNIN_ERROR,
+        payload: {
+          message: 'auth error',
+        },
+      });
     }
   };
 

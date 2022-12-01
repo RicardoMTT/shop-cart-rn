@@ -9,22 +9,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../context/providers/authContext';
 
-// const ButtonGradient = () => {
-//   return (
-//     <TouchableOpacity style={styles.container} onPress={}>
-//       <LinearGradient
-//         // Button Linear Gradient
-//         colors={['#FFB677', '#FF3CBD']}
-//         start={{x: 0, y: 0}}
-//         end={{x: 1, y: 1}}
-//         style={styles.button}>
-//         <Text style={styles.text}>SIGN IN</Text>
-//       </LinearGradient>
-//     </TouchableOpacity>
-//   );
-// };
 export const SigninScreen = () => {
-  const {signin, isLoading} = useContext(AuthContext);
+  const {signin, isLoading, errorMessage} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,6 +39,9 @@ export const SigninScreen = () => {
           secureTextEntry={true}
           onChangeText={onChangePassword}
         />
+        <Text style={styles.messageError}>
+          {errorMessage && 'Email or password incorrect'}
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.container}
@@ -77,20 +66,25 @@ export const SigninScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  messageError: {
+    color: '#EB3654',
+    fontSize: 15,
+    marginTop: 10,
+  },
   container: {
     alignItems: 'center',
     width: 300,
   },
-  signupBold:{
-    fontWeight:'bold',
-    marginLeft:8
+  signupBold: {
+    fontWeight: 'bold',
+    marginLeft: 8,
   },
   signup: {
     display: 'flex',
-    flexDirection:'row',
+    flexDirection: 'row',
     padding: 10,
     paddingStart: 30,
-    width: '80%'
+    width: '80%',
   },
   main: {
     display: 'flex',
