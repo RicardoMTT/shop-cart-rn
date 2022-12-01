@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {AuthContext} from '../context/providers/authContext';
+import {AuthContext} from '../../context/providers/authContext';
 
 // const ButtonGradient = () => {
 //   return (
@@ -48,7 +48,7 @@ export const SigninScreen = () => {
           onChangeText={onChangeEmail}
         />
         <TextInput
-          placeholder="password"
+          placeholder="********"
           style={styles.textInput}
           secureTextEntry={true}
           onChangeText={onChangePassword}
@@ -64,11 +64,14 @@ export const SigninScreen = () => {
           end={{x: 1, y: 1}}
           style={styles.button}>
           <Text style={styles.text}>
-            {' '}
             {isLoading ? 'Loading...' : 'SIGN IN'}
           </Text>
         </LinearGradient>
       </TouchableOpacity>
+      <View style={styles.signup}>
+        <Text>¿Do you have an account?</Text>
+        <Text style={styles.signupBold}>Signup</Text>
+      </View>
     </View>
   );
 };
@@ -77,6 +80,17 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     width: 300,
+  },
+  signupBold:{
+    fontWeight:'bold',
+    marginLeft:8
+  },
+  signup: {
+    display: 'flex',
+    flexDirection:'row',
+    padding: 10,
+    paddingStart: 30,
+    width: '80%'
   },
   main: {
     display: 'flex',

@@ -5,6 +5,9 @@ import axios from 'axios';
 export const login = async (user: any) =>
   await axios.post('https://reqres.in/api/login', user);
 
+export const loginStrapi = async (user: any) =>
+  await axios.post('https://para-pruebas-back.herokuapp.com/auth/local', user);
+
 // export const profile = async token =>
 //   await axios.get(`${API}/profile`, {
 //     headers: {
@@ -13,4 +16,4 @@ export const login = async (user: any) =>
 //   });
 
 export const profile = async () =>
-  await axios.get('https://reqres.in/api/users/2');
+  await axios.get('https://para-pruebas-back.herokuapp.com');

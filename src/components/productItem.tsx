@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View , Easing} from 'react-native';
 import {Product} from '../interfaces/product.interface';
 
 import {useNavigation} from '@react-navigation/native';
@@ -15,7 +15,7 @@ export const ProductItem = ({product}: Props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('DetailScreen', {name: 'Jane'});
+        navigation.navigate('DetailScreen' as never, {product: product});
       }}>
       <View style={styles.container}>
         <Image
@@ -25,11 +25,11 @@ export const ProductItem = ({product}: Props) => {
           style={styles.image}
         />
         <View style={styles.main}>
-          <Text style={styles.title}>{product.title}</Text>
+          <Text style={styles.title}>{product.nombre}</Text>
 
           <View style={styles.rating}>
-            <Text style={styles.price}>$/ {product.price}</Text>
-            <Rating rating={product.rating} />
+            <Text style={styles.price}>$/ {product.precio}</Text>
+            <Rating rating={4} />
           </View>
         </View>
         {/* <TouchableOpacity 

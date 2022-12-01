@@ -1,6 +1,6 @@
 import React from 'react';
 import {createContext, useContext, useEffect, useReducer} from 'react';
-import {getProducts} from '../../api/productsApi';
+import {getProducts, getProductsStrapi} from '../../api/productsApi';
 import {Product} from '../../interfaces/product.interface';
 import {ProductActions} from '../actions/productActions';
 import {initialState, productReducer} from '../reducer/productReducer';
@@ -20,8 +20,9 @@ export const ProductProvider = ({children}) => {
       type: ProductActions.PRODUCT_LOAD,
     });
     try {
-      const resp = await getProducts();
-      const products: Product[] = resp.data.products;
+      const resp = await getProductsStrapi();
+
+      const products: Product[] = resp.data;
       dispatch({
         type: ProductActions.PRODUCT_LOAD_SUCCESS,
         payload: products,

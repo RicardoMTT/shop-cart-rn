@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {createContext, useContext, useReducer} from 'react';
-import {login} from '../../api/authApi';
+import {login, loginStrapi} from '../../api/authApi';
 import {AuthActions} from '../actions/authActions';
 import {authReducer, initialState} from '../reducer/authReducer';
 
@@ -15,6 +15,13 @@ export const useAuth = () => {
 export const AuthProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  const signOut = () => {
+   
+    dispatch({
+      type: AuthActions.AUTH_SIGNOUT,
+    });
+  };
+
   const signin = async ({
     email,
     password,
@@ -26,17 +33,18 @@ export const AuthProvider = ({children}: any) => {
       type: AuthActions.AUTH_SIGNIN,
     });
     try {
-      const res = await login({email, password});
-
-      const {token} = res.data;
-      if (token) {
+      const res = await loginStrapi({identifier:email, password});
+      
+      const {jwt,user} = res.data;
+      if (jwt) {
         dispatch({
           type: AuthActions.AUTH_SIGNIN_SUCCESS,
           payload: {
-            token,
+            token:jwt,
+            user:user
           },
         });
-        return token;
+        return jwt;
       }
     } catch (error) {
       console.log('error', error);
@@ -48,6 +56,7 @@ export const AuthProvider = ({children}: any) => {
       value={{
         ...state,
         signin,
+        signOut,
       }}>
       {children}
     </AuthContext.Provider>

@@ -19,8 +19,8 @@ export const HomeScreen = () => {
   );
 };
 const style = StyleSheet.create({
-  main:{
-    marginTop:10
+  main: {
+    marginTop: 10,
   },
   row: {
     flex: 1,

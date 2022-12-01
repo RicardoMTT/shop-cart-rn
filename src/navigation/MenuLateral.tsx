@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {
   createDrawerNavigator,
@@ -6,35 +6,51 @@ import {
 } from '@react-navigation/drawer';
 
 import {Image, Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import {HomeScreen} from '../screens/HomeScreen';
 import {UserProfileScreen} from '../screens/user/UserProfileScreen';
+import {HomeScreen} from '../screens/HomeScreen';
 import {DetailScreen} from '../screens/DetailScreen';
+import {AuthContext, useAuth} from '../context/providers/authContext';
 
-const Drawer = createDrawerNavigator();
+type StackParams = {
+  HomeScreen: undefined; //HomeNavigation es el name que defines en tu navigator
+  UserProfileScreen: undefined;
+  DetailScreen: undefined;
+};
+
+const Drawer = createDrawerNavigator<StackParams>();
 
 export const MenuLateral = () => {
-  //   const {width} = useWindowDimensions();
-
+  const {user} = useAuth();
   return (
-    <Drawer.Navigator
-      //   drawerType={width >= 768 ? 'permanent' : 'front'}
-      drawerContent={props => <MenuInterno {...props} />}>
-      <Drawer.Screen name="HomeScreen" component={HomeScreen}  options={{title: 'Home'}}/>
+    <Drawer.Navigator drawerContent={props => <MenuInterno {...props} />}>
       <Drawer.Screen
-        name="UserProfileScreen"
-        component={UserProfileScreen}
-        options={{title: 'My profile'}}
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          title: 'Home',
+          headerRight: () => {
+            return <Text>Carrito</Text>;
+          },
+        }}
       />
       <Drawer.Screen
         name="DetailScreen"
         component={DetailScreen}
         options={{headerShown: false}}
       />
+      <Drawer.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{
+          title: user && user.cliente ? user.cliente.nombre : 'My profile',
+        }}
+      />
     </Drawer.Navigator>
   );
 };
 
 const MenuInterno = ({navigation}: any) => {
+  const {signOut} = useContext(AuthContext);
   return (
     <DrawerContentScrollView>
       {/* Parte del avatar */}
@@ -60,6 +76,10 @@ const MenuInterno = ({navigation}: any) => {
           style={style.flexRow}
           onPress={() => navigation.navigate('UserProfileScreen')}>
           <Text> Profile</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={style.flexRow} onPress={() => signOut()}>
+          <Text> Signout</Text>
         </TouchableOpacity>
       </View>
     </DrawerContentScrollView>

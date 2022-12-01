@@ -12,6 +12,13 @@ export const authReducer = (state: any = initialState, action: any) => {
   const {type, payload} = action;
 
   switch (type) {
+    case AuthActions.AUTH_SIGNOUT:
+      return {
+        ...state,
+        isLoading: false,
+        token: null,
+        isLoggedIn: false,
+      };
     case AuthActions.AUTH_SIGNIN:
       return {
         ...state,
@@ -23,7 +30,7 @@ export const authReducer = (state: any = initialState, action: any) => {
         ...state,
         isLoading: false,
         token: payload.token,
-        user: '',
+        user: payload.user,
         errorMessage: null,
         isLoggedIn: true,
       };

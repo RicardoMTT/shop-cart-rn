@@ -22,11 +22,13 @@ export const UserProvider = ({children}: any) => {
     try {
       // Get profile
       const res = await profile();
+      
       if (res.data) {
         dispatch({
           type: UserActions.USER_SUCCESS,
-          payload: res.data,
+          payload: res.data.data,
         });
+        return res.data.data;
       }
     } catch (error) {
       dispatch({

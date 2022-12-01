@@ -1,40 +1,63 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
-import {userAuth} from '../../context/providers/userContext';
+import {useAuth} from '../../context/providers/authContext';
 
 export const UserProfileScreen = () => {
-  const {user, isLoading, getProfile} = userAuth();
-
-  useEffect(() => {
-    getProfile();
-  }, []);
+  const {isLoading, user} = useAuth();
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
   const edit = require('../../assets/edit.png');
+
+  const initializeValues = () => {
+    if (user) {
+      setEmail(user.email);
+      setName(user.cliente.nombre);
+      setLastName(user.cliente.apellido);
+    }
+  };
+  useEffect(() => {
+    initializeValues();
+  }, []);
 
   if (isLoading) {
     return <Text>Cargando ....</Text>;
   }
-  if (user) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.containerImage}>
-          <Image
-            source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1qC3u80eU1l5d-nmVYN9r0fSktSSxiAMkwFhY5N_p&s',
-            }}
-            style={styles.image}
-          />
-          <Image source={edit} style={styles.edit} />
-          <Text style={styles.fontUser}>{user.data.first_name} 24</Text>
-          <Text style={styles.role}>Software Engineer</Text>
-        </View>
-
-        <TextInput placeholder="Email Address" style={styles.input} />
-
-        <TextInput placeholder="first name" style={styles.input} />
-        <TextInput placeholder="last name" style={styles.input} />
+  return (
+    <View style={styles.container}>
+      <View style={styles.containerImage}>
+        <Image
+          source={{
+            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1qC3u80eU1l5d-nmVYN9r0fSktSSxiAMkwFhY5N_p&s',
+          }}
+          style={styles.image}
+        />
+        <Image source={edit} style={styles.edit} />
+        <Text style={styles.fontUser}>{name} 24</Text>
+        <Text style={styles.role}>Software Engineer</Text>
       </View>
-    );
-  }
+
+      <TextInput
+        placeholder="Email Address"
+        defaultValue={email}
+        onChangeText={newText => setEmail(newText)}
+        style={styles.input}
+      />
+
+      <TextInput
+        placeholder="first name"
+        defaultValue={name}
+        onChangeText={newText => setName(newText)}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="last name"
+        defaultValue={lastName}
+        onChangeText={newText => setLastName(newText)}
+        style={styles.input}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
