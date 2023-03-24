@@ -12,8 +12,8 @@ export const UserProfileScreen = () => {
   const initializeValues = () => {
     if (user) {
       setEmail(user.email);
-      setName(user.cliente.nombre);
-      setLastName(user.cliente.apellido);
+      setName(user.name);
+      setLastName(user.lastName);
     }
   };
   useEffect(() => {

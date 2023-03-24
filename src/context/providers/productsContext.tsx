@@ -1,5 +1,5 @@
 import React from 'react';
-import {createContext, useContext, useEffect, useReducer} from 'react';
+import {createContext, useContext,  useReducer} from 'react';
 import {getProducts, getProductsStrapi} from '../../api/productsApi';
 import {Product} from '../../interfaces/product.interface';
 import {ProductActions} from '../actions/productActions';
@@ -20,7 +20,7 @@ export const ProductProvider = ({children}) => {
       type: ProductActions.PRODUCT_LOAD,
     });
     try {
-      const resp = await getProductsStrapi();
+      const resp = await getProducts();
 
       const products: Product[] = resp.data;
       dispatch({
@@ -28,15 +28,15 @@ export const ProductProvider = ({children}) => {
         payload: products,
       });
     } catch (error: any) {
+      console.log('errror productos', error);
+
       dispatch({
         type: ProductActions.PRODUCT_LOAD_ERROR,
         payload: error.message,
       });
     }
   };
-  useEffect(() => {
-    loadProducts();
-  }, []);
+ 
 
   return (
     <ProductContext.Provider

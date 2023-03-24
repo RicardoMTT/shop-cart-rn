@@ -1,50 +1,72 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-import {Image, Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import {RootStackParams} from '../navigation/HomeNavigation';
 import LinearGradient from 'react-native-linear-gradient';
+import {CartContext} from '../context/providers/cartContext';
 export type DetailsScreenRouteProp = RouteProp<RootStackParams, 'DetailScreen'>;
 
 export const DetailScreen = (product: any) => {
   const productDetail = product.route.params.product;
   // const route = useRoute<DetailsScreenRouteProp>();
   // const product2 = route.params.product;
+  const {appendItemToCart} = useContext(CartContext);
+
   const navigation = useNavigation();
   const navigateToHome = () => {
     navigation.navigate('HomeScreen' as never);
   };
 
-  const emptyStar = require('../assets/previous.png');
+  console.log('product<<<<<<<<<<<<<<', productDetail);
+
+  // const emptyStar = require('../assets/previous.png');
+
+  const appendItemToCartFn = () => {
+    appendItemToCart(productDetail);
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <Image
-        source={{
-          uri: `https://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c53e.png`,
-        }}
-        style={styles.image}
-      />
+    <View style={styles.container}>
+      <View>
+        <Image
+          source={{
+            uri: productDetail.images[0],
+          }}
+          resizeMode="contain"
+          style={styles.image}
+        />
+      </View>
       <View style={styles.text}>
         <TouchableOpacity onPress={() => navigateToHome()}>
-          <Image source={emptyStar} style={styles.button} />
+          <Image
+            source={{uri: productDetail.images[0]}}
+            style={styles.button}
+          />
         </TouchableOpacity>
         <Text style={styles.fontDescription}>Description</Text>
-        <Text>{productDetail.descripcion}</Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi porro
-          cum tenetur officiis possimus sequi accusantium dignissimos nihil
-          expedita molestias sapiente velit ducimus enim sunt, temporibus
-          eveniet ad laboriosam similique odit vitae quidem ullam! Quis ex iste
-          facere qui assumenda iure corporis iusto atque minima mollitia totam,
-          et quae recusandae.
-        </Text>
+        <Text>{productDetail.description}</Text>
         <View style={styles.horizontalLine}></View>
 
-        <Text style={styles.price}>$ {productDetail.precio}.00</Text>
-
-        <TouchableOpacity style={styles.containerBtn}>
+        <Text style={styles.price}>$ {productDetail.price}.00</Text>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          paddingHorizontal: 10,
+          position: 'absolute',
+          bottom: 20,
+        }}>
+        <TouchableOpacity
+          style={styles.containerBtn}
+          onPress={() => appendItemToCartFn()}>
           <LinearGradient
             colors={['#FFB677', '#FF3CBD']}
             start={{x: 0, y: 0}}
@@ -54,7 +76,7 @@ export const DetailScreen = (product: any) => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

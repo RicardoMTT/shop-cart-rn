@@ -6,5 +6,6 @@ import {Navigation} from '../navigation/Navigation';
 
 export const IndexNavigation = () => {
   const {isLoggedIn} = useAuth();
+ 
   return <>{isLoggedIn ? <MenuLateral /> : <Navigation />}</>;
 };

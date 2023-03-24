@@ -1,7 +1,7 @@
 import {ProductActions} from '../actions/productActions';
 
 export const initialState = {
-  products: [],
+  products: {},
   isLoading: false,
   errorMessage: '',
 };

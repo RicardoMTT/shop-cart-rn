@@ -1,12 +1,22 @@
-import React, {useContext} from 'react';
-import {FlatList, StyleSheet, View, TextInput} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {FlatList, StyleSheet, View, Text, TextInput} from 'react-native';
 import {ProductItem} from '../components/productItem';
 import {ProductContext} from '../context/providers/productsContext';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 export const HomeScreen = () => {
-  const {products} = useContext(ProductContext);
+  const {products, loadProducts} = useContext(ProductContext);
 
+
+  if (products.length == 0) {
+    return (
+      <View>
+        <Text>No hay productos</Text>
+      </View>
+    );
+  }
+  useEffect(() => {
+    loadProducts();
+  }, []);
   return (
     <View style={style.main}>
       <FlatList
@@ -15,7 +25,7 @@ export const HomeScreen = () => {
             <TextInput placeholder="search product" style={style.textInput} />
           </View>
         )}
-        data={products}
+        data={products.products}
         renderItem={({item}) => <ProductItem product={item} />}
         columnWrapperStyle={style.row} // space them out evenly
         keyExtractor={(item: any) => item.id}

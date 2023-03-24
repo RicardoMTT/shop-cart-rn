@@ -13,6 +13,7 @@ import {DetailScreen} from '../screens/DetailScreen';
 import {AuthContext, useAuth} from '../context/providers/authContext';
 import {CartScreen} from '../screens/cart/CartScreen';
 import {useNavigation} from '@react-navigation/native';
+import {useCart} from '../context/providers/cartContext';
 
 type StackParams = {
   HomeScreen: undefined; //HomeNavigation es el name que defines en tu navigator
@@ -26,7 +27,7 @@ const Drawer = createDrawerNavigator<StackParams>();
 export const MenuLateral = () => {
   const {user} = useAuth();
   const navigation = useNavigation();
-
+  const {totalItems} = useCart();
   return (
     <Drawer.Navigator drawerContent={props => <MenuInterno {...props} />}>
       <Drawer.Screen
@@ -44,6 +45,21 @@ export const MenuLateral = () => {
                   color="#504F52"
                   style={style.cart}
                 />
+                <Text
+                  style={{
+                    position: 'relative',
+                    bottom: 30,
+                    right: -16,
+                    top: -30,
+                    backgroundColor: '#1152FD',
+                    color: 'white',
+                    borderRadius: 100,
+                    textAlign: 'center',
+                    width: 20,
+                    height: 20,
+                  }}>
+                  {totalItems}
+                </Text>
               </TouchableOpacity>
             );
           },
@@ -121,6 +137,8 @@ const style = StyleSheet.create({
   },
   cart: {
     marginRight: 10,
+    position: 'relative',
+    bottom: -5,
   },
   image: {
     height: 200,
