@@ -14,12 +14,15 @@ import {AuthContext, useAuth} from '../context/providers/authContext';
 import {CartScreen} from '../screens/cart/CartScreen';
 import {useNavigation} from '@react-navigation/native';
 import {useCart} from '../context/providers/cartContext';
+import TranslateScreen from '../screens/TranslateScreen';
+import {ThemeContext} from '../context/providers/themeContext';
 
 type StackParams = {
   HomeScreen: undefined; //HomeNavigation es el name que defines en tu navigator
   UserProfileScreen: undefined;
   DetailScreen: undefined;
   CartScreen: undefined;
+  TranslateScreen: undefined;
 };
 
 const Drawer = createDrawerNavigator<StackParams>();
@@ -28,6 +31,8 @@ export const MenuLateral = () => {
   const {user} = useAuth();
   const navigation = useNavigation();
   const {totalItems} = useCart();
+  const {value} = useContext(ThemeContext);
+
   return (
     <Drawer.Navigator drawerContent={props => <MenuInterno {...props} />}>
       <Drawer.Screen
@@ -35,6 +40,10 @@ export const MenuLateral = () => {
         component={HomeScreen}
         options={{
           title: 'Home',
+          headerStyle: {
+            backgroundColor: value === 'dark' ? 'black' : '#f1f1f1',
+          },
+          headerTintColor: value === 'dark' ? '#f1f1f1' : 'black',
           headerRight() {
             return (
               <TouchableOpacity
@@ -42,7 +51,7 @@ export const MenuLateral = () => {
                 <Icon
                   name="cart-outline"
                   size={30}
-                  color="#504F52"
+                  color={value === 'dark' ? '#f1f1f1' : '#504F52'}
                   style={style.cart}
                 />
                 <Text
@@ -74,6 +83,11 @@ export const MenuLateral = () => {
       <Drawer.Screen
         name="CartScreen"
         component={CartScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="TranslateScreen"
+        component={TranslateScreen}
         options={{headerShown: false}}
       />
       <Drawer.Screen
@@ -115,6 +129,12 @@ const MenuInterno = ({navigation}: any) => {
           style={style.flexRow}
           onPress={() => navigation.navigate('UserProfileScreen')}>
           <Text> Profile</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={style.flexRow}
+          onPress={() => navigation.navigate('TranslateScreen')}>
+          <Text> Translate</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

@@ -7,19 +7,22 @@ import {ProductProvider} from './src/context/providers/productsContext';
 import {IndexNavigation} from './src/navigation/IndexNavigation';
 import {UserProvider} from './src/context/providers/userContext';
 import {CartProvider} from './src/context/providers/cartContext';
+import {ThemeProvider} from './src/context/providers/themeContext';
 
 const App = () => {
   return (
     <NavigationContainer>
-      <AuthProvider>
-        <CartProvider>
-          <UserProvider>
-            <ProductProvider>
-              <IndexNavigation />
-            </ProductProvider>
-          </UserProvider>
-        </CartProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <CartProvider>
+            <UserProvider>
+              <ProductProvider>
+                <IndexNavigation />
+              </ProductProvider>
+            </UserProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </NavigationContainer>
   );
 };

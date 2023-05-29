@@ -1,39 +1,49 @@
-import React from 'react';
-import {Image, StyleSheet, Text, View, Easing} from 'react-native';
+import React, {useState} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {Product} from '../interfaces/product.interface';
-
 import {useNavigation} from '@react-navigation/native';
 import {Rating} from './rating';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+
+import * as Animatable from 'react-native-animatable';
+
+const AnimatedItem = Animatable.createAnimatableComponent(View);
 interface Props {
   product: Product;
 }
 
 export const ProductItem = ({product}: Props) => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => {
-        navigation.navigate('DetailScreen' as never, {product: product});
-      }}>
-      <View>
-        <Image
-          source={{
-            uri: product.images[0],
-          }}
-          style={styles.image}
-        />
-        <View style={styles.main}>
-          <Text style={styles.title}>{product.title}</Text>
+    <AnimatedItem
+      animation={isVisible ? 'bounceInUp' : ''}
+      duration={1000}
+      delay={200}
+      useNativeDriver={true}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          navigation.navigate('DetailScreen' as never, {product: product});
+        }}>
+        <View>
+          <Image
+            source={{
+              uri: product.images[0],
+            }}
+            style={styles.image}
+          />
+          <View style={styles.main}>
+            <Text style={styles.title}>{product.title}</Text>
 
-          <View style={styles.rating}>
-            <Text style={styles.price}>$/ {product.price}</Text>
-            <Rating rating={4} />
+            <View style={styles.rating}>
+              <Text style={styles.price}>$/ {product.price}</Text>
+              <Rating rating={4} />
+            </View>
           </View>
-        </View>
-        {/* <TouchableOpacity 
+          {/* <TouchableOpacity 
         onPress={() => {
           navigation.navigate('DetailScreen', {name: 'Jane'});
         }}
@@ -41,8 +51,9 @@ export const ProductItem = ({product}: Props) => {
         <Text style={styles.text}>{product.title}</Text>
         <Text style={styles.text}>Buy</Text>
       </TouchableOpacity> */}
-      </View>
-    </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </AnimatedItem>
   );
 };
 
