@@ -15,7 +15,6 @@ export const CartProvider = ({children}) => {
   useEffect(() => {
     // localStorage.setItem('cart', JSON.stringify(state));
     // you should use AsyncStorage
-    console.log('state', state);
   }, [state]);
 
   const appendItemToCart = (item, increment = 1) => {

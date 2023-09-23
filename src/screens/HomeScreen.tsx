@@ -6,20 +6,35 @@ import {
   Text,
   TextInput,
   Switch,
+  Platform,
+  Dimensions,
 } from 'react-native';
 import {ProductItem} from '../components/productItem';
 import {ProductContext} from '../context/providers/productsContext';
 import {ThemeContext} from '../context/providers/themeContext';
+import useDelayedFunctionCall from '../hooks/useDelay';
+import { SearchInput } from '../components/search';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+const screenWidth = Dimensions.get('window').width;
 export const HomeScreen = () => {
-  const {products, loadProducts} = useContext(ProductContext);
+  const {products, loadProducts,searchProductByTermApi} = useContext(ProductContext);
   // const [isEnabled, setIsEnabled] = useState(false);
   const {value, changeDarkLightMode} = useContext(ThemeContext);
-
+  const [text, handleChangeText] = useDelayedFunctionCall('', 1000);
   const toggleSwitch = (valueSwitch: any) => {
     changeDarkLightMode(valueSwitch);
   };
-  console.log('productsproductsproductsproducts----', products);
+
+  const { top } = useSafeAreaInsets();
+ 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  console.log('productsproductsproductsproducts:::',products);
+  
 
   if (products.length === 0) {
     return (
@@ -31,6 +46,7 @@ export const HomeScreen = () => {
   const style = StyleSheet.create({
     styleContainerInput: {
       marginHorizontal: 30,
+      marginBottom:30
     },
     main: {
       // marginTop: 10,
@@ -56,10 +72,14 @@ export const HomeScreen = () => {
       color: value === 'dark' ? '#f1f1f1' : 'black',
     },
   });
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    loadProducts();
-  }, []);
+
+  const searchProductByTerm = (term:any) => {
+    
+    if (term.length > 0) {
+      searchProductByTermApi(term); 
+    }
+    
+  }
   return (
     <View style={style.main}>
       <View
@@ -77,13 +97,21 @@ export const HomeScreen = () => {
           value={value === 'dark' ? true : false}
         />
       </View>
+    
+
       <FlatList
         ListHeaderComponent={() => (
           <View style={style.styleContainerInput}>
-            <TextInput placeholder="search product" style={style.textInput} />
+              <SearchInput
+                onDebounce={ (value) => searchProductByTerm(value)  }
+                style={{
+                    width: screenWidth - 40,
+                    top: ( Platform.OS === 'ios' ) ? top : top + 30
+                }}
+            />
           </View>
         )}
-        data={products.products}
+        data={products}
         renderItem={({item}) => <ProductItem product={item} />}
         columnWrapperStyle={style.row} // space them out evenly
         keyExtractor={(item: any) => item.id}

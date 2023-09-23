@@ -9,7 +9,6 @@ import {
 import React, {useRef, useState} from 'react';
 
 export default function Carousel({images}) {
-  console.log('images', images);
   const carouselRef = useRef(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -44,7 +43,6 @@ export default function Carousel({images}) {
   };
 
   const handlePrev = () => {
-    console.log('prev',activeIndex);
 
     if (activeIndex > 0) {
       //para hacer que el carousel se desplace a un elemento específico.
